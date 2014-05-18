@@ -99,13 +99,10 @@ action :create do
         shell u['shell']
         comment u['comment']
         password u['password'] if u['password']
-        if home_dir == "/dev/null"
-          supports :manage_home => false
-        else
-          supports :manage_home => true
-        end
+        manage_home true if (home_dir != "/dev/null") and (new_resource.manage_home)
         home home_dir
         action u['action'] if u['action']
+        manage
       end
 
       if manage_home_files?(home_dir, u['username'])
